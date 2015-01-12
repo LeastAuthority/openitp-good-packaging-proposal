@@ -281,85 +281,9 @@ this problem in the scope of this project:
    and evangelize these practices to other developers of open-source
    software.
 
-==========
- Schedule
-==========
-
-We propose to improve Tahoe-LAFS packaging to increase adoption and move
-towards verifiable builds in these sequential stages:
-
-Phase 1: Package Testing Infrastructure
----------------------------------------
-
-The current volunteer-run build and test network relies on a somewhat
-opaque `Buildbot`_ configuration that was not published because it
-contained secrets. Additionally, aside from unit tests in the
-Tahoe-LAFS codebase itself, the only other automated tests live in
-this configuration repository and are ad-hoc.
-
-This stage will produce a public repository of *build and integration
-tests* which is separate from the Tahoe-LAFS codebase proper. This will
-allow a broader scope of tests, such as:
-
-* tests that target different sources of Tahoe-LAFS, such as git
-  checkouts, tarball downloads, and platform distributions packages;
-* tests that target versions of Tahoe-LAFS, such as upgrade tests;
-* tests that target auxillary projects, such as Tahoe-LAFS dependencies;
-* integration tests, such as end-to-end tests of fuse frontends, including
-  performance analyses;
-* uninstallation tests.
-
-The primary value of this phase, however, is in publishing these tests to
-a public repository with issue tracking and pull request management, in
-order to accelerate community contributions.
-
-There are several steps to this phase:
-
-#. Split the private configuration details from the test harness and
-   public code details of the current Buildbot configuration. (Note:
-   This is mostly done.)
-#. Create a new Buildbot configuration that clones and launches the
-   public package test repository.
-#. Test this new architecture on a few opt-in build-slave machines
-   and verify manually that the test results appear consistent with the
-   production Buildbot network.
-#. Test the Tahoe-LAFS release procedure using this new testing Buildbot
-   architecture, and verify through manual inspection and unit tests
-   that the resulting packages have no notable differences from those
-   produced by the existing Buildbot production network.
-#. Switch the production configuration to use the new public test
-   repository. This will deploy the new configurations to the volunteer
-   production packaging network.  (This stage may also be rolled out to
-   a subset of build-slaves in multiple updates.)
-
-Phase 2: Fix pip hurdles
-------------------------
-
-There are two hurdles to supporting installation of Tahoe-LAFS using
-`pip`:
-
-* Replace or patch `Nevow`, a broken dependency which has a problem with
-  `pip` installation. Either `Ticket 1963`_ *or* `Ticket 2032`_.
-
-  (Tahoe-LAFS `Ticket 2032`_ depends on a bug in a third party
-  dependency, `Nevow bug 1091055`_. There are already proposed patches
-  for the latter, but completion depends on a separate developer
-  community.)
-
-* Determine how to meet the Tahoe-LAFS packaging goal that users without
-  compilers can install binary dependencies.
-
-  Currently this is possible using Tahoe-LAFS' ``setup.py`` file, but
-  there is a potential conflict with pip's assumptions.  In the worst case,
-  we can keep this "no-compiler" goal with the caveat that those users
-  cannot use the standard pip installation process.
-
-.. _`Ticket 1963`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/1963
-.. _`Ticket 2032`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/2032
-.. _`Nevow bug 1091055`: https://bugs.launchpad.net/nevow/+bug/1091055
-
-Phase 3: Mac OS X packaging
----------------------------
+====================
+ Mac OS X packaging
+====================
 
 This OS X packaging phase has four steps:
 
@@ -389,8 +313,9 @@ This OS X packaging phase has four steps:
 
 .. (comment) See this - http://stackoverflow.com/questions/116657/how-do-you-create-an-osx-application-dmg-from-a-python-package
 
-Phase 4: Windows packaging
---------------------------
+===================
+ Windows packaging
+===================
 
 This Windows packaging phase has four steps, similar to `Phase 3: Mac OS X packaging`_
 
