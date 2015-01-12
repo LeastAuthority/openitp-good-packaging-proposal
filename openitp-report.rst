@@ -291,23 +291,28 @@ This OS X packaging phase has four steps:
 #. Implement packaging tests for known OS X-specific issues:
 
    * `Ticket 1006`_: *Incorrect pycryptopp architecture selected on osx 10.6.*
+
+     This ticket has been closed as it is difficult to reproduce. Also there
+     are probably not many installations of OS X 10.6 these days. On newer OS X
+     versions, this has not been observed..
+
    * `Ticket 2001`_: *build binary eggs for macosx-10.8-intel (osx mountain lion)*
 
    .. _`Ticket 1006`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/1006
    .. _`Ticket 2001`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/2001
 
-#. Fix those tickets and verify that source-based or pip-based
-   installations work on OS X on the relevant Build-slaves.
-
-   At this stage we will also announce the improves OS X support on
-   the mailing list, which will help the project gauge interest in this
-   package. This may also produce more issues to incorporate into the
-   test system, or user FAQs.
-
-#. Create a new build target for an OS X `DMG`-based package, and develop
-   an automated package test in concert with this development.
-
    * `Ticket 182`_: *user-friendly installer for Mac -- for my Mom!*
+
+     A make target for building OS X package has been added. Package tests are
+     also added to see if the resultant python package modules are installed
+     in the right directories.
+
+     A video of the OS X package building, configuration and usage has been
+     made and will be posted on the blog.
+
+     The OS X installer package  will be made available for the subsequent
+     official releases of Tahoe-LAFS. Currently it builds the version from
+     the master branch.
 
    .. _`Ticket 182`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/182
 
