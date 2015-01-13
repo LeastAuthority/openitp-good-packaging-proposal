@@ -231,7 +231,7 @@ to the fingerprint in the published report.::
 
 This approach can work only if, for each platform, the ➾ operation
 performed by the distributor results in a bytewise-identical binary
-as the ➾ operation performed by the security auditor.
+to the ➾ operation performed by the security auditor.
 
 The definition of a "platform" must be clearly stated so that
 auditors know which fingerprints need to be generated, and users
@@ -251,7 +251,7 @@ Goals for this deliverable
 --------------------------
 
 For this OpenITP proposal, our goal was to have documentation of
-the ways in which Tahoe-LAFS builds are not currently repeatable.
+the ways in which Tahoe-LAFS builds are *not* currently repeatable.
 The scope of this documentation includes:
 
 * Tahoe-LAFS as built via setup.py (using setuptools and/or pip), and
