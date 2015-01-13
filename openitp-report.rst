@@ -288,40 +288,149 @@ Python packages. Depending on the platform and installation method,
 there may also be user choices of installation directory, optional
 components to be installed, and whether the installation is per-user or
 shared across users, that could affect the behaviour of the resulting
-Python instance.
+Python instance. It is also possible that multiple instances of Python
+may be installed.
 
-download the allmydata-tahoe-*.zip file (for a given build target)
-  [NONDET: operating system versions, patches, variants, distribution if counted as the same target]
-unzip it
-  [NONDET: unzip programs might vary in e.g. permissions of unzipped files]
-  [NONDET: file timestamps may depend on the clock of the build system]
-  [NONDET: order of files/subdirs in directories, if filesystem does not sort them]
-run setup.py build in a command prompt
-  [NONDET: which Python version runs setup.py?]
-  [NONDET: other installed Python versions might affect the build?]
-  [NONDET: which setuptools/pkg_resources/virtualenv version?]
-  [NONDET: system or virtualenv?]
-  [NONDET: which other Python packages installed on system and in virtualenv?]
-  [NONDET: PYTHONPATH]
-* it has some set of URLs where it looks for package distributions ("dists")
-  [NONDET: using the net at all is hopeless wrt determinism]
+#  [NONDET: operating system versions, patches, variants, distribution if counted as the same target]
+
+
+2. Get Tahoe-LAFS
+
+The user is directed to download the latest stable release. Release
+archives are provided in six formats: three "SUMO" formats that include
+all dependencies, and three "non-SUMO" formats that only include the
+source code for Tahoe-LAFS itself. Each of these is provided as ``.zip``,
+``.tar.bz2`` and ``.tar.gz`` archive types. The link from `quickstart.rst`_
+is to the non-SUMO ``.zip`` archive. (It may be useful to reduce the
+number of formats provided in order to simplify support for repeatable
+builds.)
+
+The auditor must have an authentic copy of the same release, and a
+correct program for extracting the archive. The archive must be
+extracted into a new directory. There are potential sources of
+nondeterminism in how it is extracted:
+
+* The permissions of the extracted files may vary depending on the
+  extraction program and options, and the umask (or similar on
+  non-Unix operating systems) of the user.
+* File timestamps may depend on the clock of the build system.
+* The order of files and subdirectories in each directory may vary,
+  if the filesystem or extraction program does not automatically
+  sort them.
+* Filesystems may vary in case sensitivity; this can matter if an
+  archive has entries in the same directory with names differing
+  only in case (or Unicode normalization form).
+
+3. Build Tahoe-LAFS
+
+The user is directed to run "``python setup.py build``". Sources of
+nondeterminism could include:
+
+* The version of Python that is run. (This should be the one chosen
+  in step 1 above, but may not be.)
+* The shell that runs Python, and the environment variables set in
+  that shell. This includes variables specific to Python, of which
+  there are many (PYTHONPATH, PYTHONDONTWRITEBYTECODE, PYTHONDEBUG,
+  PYTHONINSPECT, PYTHONOPTIMIZE, PYTHONNOUSERSITE, PYTHONUNBUFFERED,
+  PYTHONVERBOSE, PYTHONWARNINGS, PYTHONSTARTUP, PYTHONHOME,
+  PYTHONCASEOK, PYTHONIOENCODING, PYTHONHASHSEED), and those defined
+  by the operating system (for example on Unix, LD_LIBRARY_PATH
+  and locale-related variables).
+* Redirection and terminal settings.
+* Other installed Python versions. It is potentially possible for
+  Python subprocesses to use a different instance of Python, although
+  the build attempts to avoid this. See for example
+  `#1302`_ ("installing Python 3 breaks bin\tahoe on Windows").
+* The versions of libraries imported directly by ``setup.py``,
+  such as ``setuptools`` and ``pkg_resources``.
+* Whether the build is performed in a ``virtualenv`` environment.
+* Which other Python packages are installed in the system and in
+  any ``virtualenv`` environment. (Potentially, *any* installed
+  library could have side effects on the build even if it is not
+  a dependency of Tahoe-LAFS.)
+
+The build process uses a library called ``setuptools`` to satisfy
+any needed dependencies. By default, missing dependencies are
+downloaded from the Internet. Since Internet access is essentially
+impossible to make repeatable, this behaviour would need to be
+disabled in order to achieve repeatable builds. For the purpose
+of this analysis, we will assume that all dependencies are available
+locally (for example by using a SUMO build), and that downloads from
+the Internet are prevented. (It may be desirable to block Internet
+access by the build process rather than relying only on documented
+``setuptools`` behaviour.) Tahoe-LAFS ticket `#2055`_ ("Building
+tahoe safely is non-trivial") documents our attempts to fix these
+problems.
+
+The following ``setuptools`` bugs may complicate reasoning about
+which dependencies are used:
+* `#1450`_ ("setuptools downloads and builds a correct version of
+  a dependency in the install-to-egg step, but then adds a different
+  version not satisfying the requirement to ``easy_install.pth``")
+* `#2306`_
+* `#1258`_ ("having Tahoe or any dependency installed in site-packages (or any other shared directory) can cause us to run or test the wrong code
+
+Improvements to Tahoe-LAFS' build process that could mitigate the
+effects of these issues and improve testability:
+* `#1346`_ ("desert-island test can pass incorrectly because packages
+  are installed")
+* https://tahoe-lafs.org/trac/tahoe-lafs/ticket/1504
+  (allow build ignoring system-installed packages)
+* https://tahoe-lafs.org/trac/tahoe-lafs/ticket/1464
+  (stronger isolation between the Python libraries imported by
+  build steps and those used by buildbot)
+  #709 ("hard to run against alternate dependencies, e.g. trunk version of Foolscap")
+  #717 ("unnecessary rebuild of dependencies when tahoe-deps/ is present")
+#2129 ("``bin/tahoe debug trial`` runs installed code somewhere other than modified source files in ``src/``")
+
+#1220 ("build/install should be able to refrain from getting dependencies")
+
 * which dists it chooses can influence further choices of dist for other dependencies
-* try to build each dist
-  [NONDET: order of builds? not sure what algorithm is used]
-* dists are either pure Python or have C/C++ code
-  [NONDET: buildchain for C/C++ code (includes many non-obvious dependencies)]
-  [NONDET: build process for C/C++ code]
-  [NONDET: distutils properties that affect compilation]
-  [NONDET: environment vars that affect compilation]
-  [NONDET: execution of Python code for building a dist (e.g dict order etc.)]
-  [NONDET: do any dependencies rely on entropy sources (e.g. os.urandom)?]
-  [NONDET: can operations like running tests affect the built copy of Tahoe?]
-* sources of nondeterminism from builds of dependencies
+
+.. _`#1346`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/1346
+.. _`#1450`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/1450
+.. _`#2055`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/2055
+
+
+Our current plan to switch to a build process using ``pip`` is
+documented in `#2077`_ ("pip packaging plan").
+
+.. _`#2077`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/2077
+
+Without underestimating the difficulty in doing so, suppose for the
+sake of argument that predictable versions of Tahoe-LAFS and all of
+its direct and indirect dependencies are used in the build. That is,
+the auditor and end-user are using the same versions of all dependent
+libraries.
+
+Note that some dependencies are pure Python while others depend on
+C/C++ extension modules.
+
+The following additional sources of nondeterminism may be present:
+
+* The order in which dependencies are built.
+* Whether C/C++ extensions are "embedded" or dynamically linked
+  against an installed system library (this is relevant for
+  Crypto++ and OpenSSL).
+* The buildchain for C/C++ code (which includes many non-obvious
+  dependencies).
+* The build process for C/C++ code may be nondeterministic, for
+  example depending on timestamps, permissions, and similar.
+* distutils properties that affect compilation
+  [need reference]
+* Environment variables that affect compilation of Python code.
+* Execution of Python code for building Tahoe-LAFS or a dependency
+  (for example the order of ``dict`` elements etc.)
+* Possible reliance on entropy sources (e.g. ``os.urandom``).
+* Side effects of operations such as running tests, which may
+  write to files under the build directory.
 
 
 ====================
  Mac OS X packaging
 ====================
+
+# note: uses installed Python
 
 This OS X packaging phase has four steps:
 
@@ -361,6 +470,9 @@ This OS X packaging phase has four steps:
 ===================
  Windows packaging
 ===================
+
+# note: installer checks existing version of Python and installs
+# a known version if there is no existing version, or it is too old
 
 This Windows packaging phase has four steps, similar to `Phase 3: Mac OS X packaging`_
 
