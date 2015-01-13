@@ -214,23 +214,24 @@ package was built from the source that the auditor examined?
 
 The “repeatable build” approach attempts to answer that question by
 having the security auditor perform the “source code ➾ binary package”
-on their own trusted system, and then taking a fingerprint (secure
-hash) of the resulting binary package::
+on their own trusted system for each relevant platform, and then
+taking a fingerprint (secure hash) of each resulting binary package::
 
-   auditor: source code ➾ binary package
-   auditor: binary package → generate fingerprint
+   for each platform:
+     auditor: source code ➾ binary package[platform]
+     auditor: binary package[platform] → generate fingerprint
 
-The auditor then publishes that fingerprint along with their report
-about their security audit. Users who receive the binary package can
-take a fingerprint of that package and compare it to the fingerprint
-in the published report.::
+The auditor then publishes these fingerprints along with their report
+about their security audit. Users who receive the binary package for
+a given platform can take a fingerprint of that package and compare it
+to the fingerprint in the published report.::
 
-   distributor: source code ➾ binary package → user
-   user: binary package → check fingerprint
+   distributor: source code ➾ binary package[platform] → user
+   user: binary package[platform] → check fingerprint
 
-This approach can work only if the ➾ operation performed by the
-distributor results in a bytewise-identical binary as the ➾ operation
-performed by the security auditor.
+This approach can work only if, for each platform, the ➾ operation
+performed by the distributor results in a bytewise-identical binary
+as the ➾ operation performed by the security auditor.
 
 Here is a news article from LWN.net about the concept of repeatable
 builds (prompted in part by an open letter that we wrote): `“Security
