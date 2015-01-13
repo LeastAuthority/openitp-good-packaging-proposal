@@ -281,6 +281,43 @@ this problem in the scope of this project:
    and evangelize these practices to other developers of open-source
    software.
 
+Sources of nondeterminism
+-------------------------
+
+note: nondeterminism that results in obvious build failures is ok
+different build targets can have different fingerprints
+* what counts as a build target?
+  [NONDET: operating system versions, patches, variants, distribution if counted as the same target]
+quickstart build flow:
+install Python if necessary
+download the allmydata-tahoe-*.zip file (for a given build target)
+unzip it
+  [NONDET: unzip programs might vary in e.g. permissions of unzipped files]
+  [NONDET: file timestamps may depend on the clock of the build system]
+  [NONDET: order of files/subdirs in directories, if filesystem does not sort them]
+run setup.py build in a command prompt
+  [NONDET: which Python version runs setup.py?]
+  [NONDET: other installed Python versions might affect the build?]
+  [NONDET: which setuptools/pkg_resources/virtualenv version?]
+  [NONDET: system or virtualenv?]
+  [NONDET: which other Python packages installed on system and in virtualenv?]
+  [NONDET: PYTHONPATH]
+* it has some set of URLs where it looks for package distributions ("dists")
+  [NONDET: using the net at all is hopeless wrt determinism]
+* which dists it chooses can influence further choices of dist for other dependencies
+* try to build each dist
+  [NONDET: order of builds? not sure what algorithm is used]
+* dists are either pure Python or have C/C++ code
+  [NONDET: buildchain for C/C++ code (includes many non-obvious dependencies)]
+  [NONDET: build process for C/C++ code]
+  [NONDET: distutils properties that affect compilation]
+  [NONDET: environment vars that affect compilation]
+  [NONDET: execution of Python code for building a dist (e.g dict order etc.)]
+  [NONDET: do any dependencies rely on entropy sources (e.g. os.urandom)?]
+  [NONDET: can operations like running tests affect the built copy of Tahoe?]
+* sources of nondeterminism from builds of dependencies
+
+
 ====================
  Mac OS X packaging
 ====================
@@ -288,35 +325,37 @@ this problem in the scope of this project:
 This OS X packaging phase has four steps:
 
 #. Solicit a volunteer to provide an OS X Buildbot slave.
+
+   A volunteer has been found and this is planned to be set up within the next
+   few weeks.
+
 #. Implement packaging tests for known OS X-specific issues:
 
    * `Ticket 1006`_: *Incorrect pycryptopp architecture selected on osx 10.6.*
 
      This ticket has been closed as it is difficult to reproduce. Also there
      are probably not many installations of OS X 10.6 these days. On newer OS X
-     versions, this has not been observed..
+     versions, this has not been observed.
 
-   * `Ticket 2001`_: *build binary eggs for macosx-10.8-intel (osx mountain lion)*
+   * `Ticket 2001`_: *build binary eggs for macosx-10.9-intel (mavericks)*
 
    .. _`Ticket 1006`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/1006
    .. _`Ticket 2001`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/2001
 
-   * `Ticket 182`_: *user-friendly installer for Mac -- for my Mom!*
+   * `Ticket 182`_: *build a .pkg installer for Mac OS X 10.9 Mavericks (intel-x86-64)*
 
      A make target for building OS X package has been added. Package tests are
-     also added to see if the resultant python package modules are installed
+     also added to see if the resultant Python package modules are installed
      in the right directories.
 
-     A video of the OS X package building, configuration and usage has been
-     made and will be posted on the blog.
+     A draft video of the OS X package configuration and usage has been
+     made, and will be posted on the blog once editing has been completed.
 
-     The OS X installer package  will be made available for the subsequent
+     The OS X installer package will be made available for the subsequent
      official releases of Tahoe-LAFS. Currently it builds the version from
      the master branch.
 
    .. _`Ticket 182`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/182
-
-.. (comment) See this - http://stackoverflow.com/questions/116657/how-do-you-create-an-osx-application-dmg-from-a-python-package
 
 ===================
  Windows packaging
