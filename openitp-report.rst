@@ -272,8 +272,24 @@ successfully built packages.
 Sources of nondeterminism
 -------------------------
 
-quickstart build flow:
-install Python if necessary
+We start by considering the "quickstart" build flow, which builds a
+copy of Tahoe-LAFS for the current platform as documented in
+`quickstart.rst`_. (This build flow is also one of the steps in
+creating the Mac OS X and Windows packages.)
+
+.. _quickstart.rst: https://tahoe-lafs.org/trac/tahoe-lafs/browser/docs/quickstart.rst
+
+1. Install Python
+
+A source of nondeterminism is the version of Python installed (including
+any OS distribution-specific patches). If an existing Python installation
+is used, it may have been customized or modified by installing other
+Python packages. Depending on the platform and installation method,
+there may also be user choices of installation directory, optional
+components to be installed, and whether the installation is per-user or
+shared across users, that could affect the behaviour of the resulting
+Python instance.
+
 download the allmydata-tahoe-*.zip file (for a given build target)
   [NONDET: operating system versions, patches, variants, distribution if counted as the same target]
 unzip it
