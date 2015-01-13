@@ -189,12 +189,13 @@ targets.
 ===========================
 
 A long-term goal, which we will make progress toward in the scope of
-this project, is to enable end-users to *verify* that the package of
+this project, is to enable end-users to verify that the package of
 Tahoe-LAFS that they are using was generated from the exact same
-source code that a security auditor examined.
+source code that a security auditor examined. This requires builds
+of the package to be *repeatable*.
 
-In order to explain the verifiable build concept, consider this simple
-diagram::
+In order to explain the repeatable build concept and how it can be
+used to verify software, consider this simple diagram::
 
     distributor: source code ➾ binary package → user
 
@@ -211,7 +212,7 @@ and examine it for vulnerabilities or backdoors.::
 How can the user who receives a binary package know whether that
 package was built from the source that the auditor examined?
 
-The “verifiable build” approach attempts to answer that question by
+The “repeatable build” approach attempts to answer that question by
 having the security auditor perform the “source code ➾ binary package”
 on their own trusted system, and then taking a fingerprint (secure
 hash) of the resulting binary package::
@@ -231,7 +232,7 @@ This approach can work only if the ➾ operation performed by the
 distributor results in a bytewise-identical binary as the ➾ operation
 performed by the security auditor.
 
-Here is a news article from LWN.net about the concept of verifiable
+Here is a news article from LWN.net about the concept of repeatable
 builds (prompted in part by an open letter that we wrote): `“Security
 software verifiability”`_. Here is a `post on the tahoe-dev mailing
 list`_ and an `issue tracker ticket`_ about our desire to have
