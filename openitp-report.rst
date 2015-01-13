@@ -233,6 +233,10 @@ This approach can work only if, for each platform, the ➾ operation
 performed by the distributor results in a bytewise-identical binary
 as the ➾ operation performed by the security auditor.
 
+different build targets can have different fingerprints
+* what counts as a build target?
+  [NONDET: operating system versions, patches, variants, distribution if counted as the same target]
+
 Here is a news article from LWN.net about the concept of repeatable
 builds (prompted in part by an open letter that we wrote): `“Security
 software verifiability”`_. Here is a `post on the tahoe-dev mailing
@@ -243,53 +247,26 @@ verifiable builds for Tahoe-LAFS.
 .. _post on the tahoe-dev mailing list: https://tahoe-lafs.org/pipermail/tahoe-dev/2013-August/008684.html
 .. _issue tracker ticket: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/2057
 
-An example of this approach is the recent ad hoc `reproduction of the
-TrueCrypt Windows binaries`_.
+Goals for this deliverable
+--------------------------
 
-.. _reproduction of the TrueCrypt Windows binaries: https://madiba.encs.concordia.ca/~x_decarn/truecrypt-binaries-analysis/
+For this OpenITP proposal, our goal was to have documentation of
+the ways in which Tahoe-LAFS builds are not currently verifiable.
+The scope of this documentation includes:
 
-There are several reasons why we will not be able to completely solve
-this problem in the scope of this project:
+* Tahoe-LAFS as built via setup.py (using setuptools and/or pip), and
+* the MAC OS X (#182) and Windows (#195) packages 
 
-1. Users sometimes prefer to use software as packaged by their
-   operating system distribution, rather than as packaged by the
-   upstream maintainers. In this case, the *verifiable build property*
-   can be achieved only by the operating system maintainers choosing
-   to opt-in to the verifiable build process.
+but does not include Tahoe-LAFS as packaged by an operating system
+distribution or package management system.
 
-   The Debian project has already `begun working on this`_, following
-   the lead of the `Tor`_ and `Bitcoin`_ projects, which have
-   pioneered reproducible builds.
+In order for a build to be verifiable, the ...
 
-   .. _begun working on this: https://wiki.debian.org/ReproducibleBuilds
-   .. _Tor: https://blog.torproject.org/category/tags/deterministic-builds
-   .. _Bitcoin: https://en.bitcoin.it/wiki/Release_process
-
-   One deliverable from this project, therefore, will be to document best
-   practices for upstream software developers (us) to cooperate with
-   distribution maintainers (starting with Debian), to facilitate
-   verifiable builds.
-
-2. Verifiable builds would be a lot more valuable to users if many
-   software packages, many security auditors, many distributors
-   (e.g. Linux distributions), and many users all use a comparable
-   process. If there are only a few software projects generating
-   verifiable builds, and if software projects tend to generate
-   verifiable builds in bespoke and non-reusable ways, then security
-   auditors are less likely to use this approach, and users are less
-   likely to verify packages.
-
-   Therefore one desirable outcome of this project would be to document
-   and evangelize these practices to other developers of open-source
-   software.
+note: nondeterminism that results in obvious build failures is ok
 
 Sources of nondeterminism
 -------------------------
 
-note: nondeterminism that results in obvious build failures is ok
-different build targets can have different fingerprints
-* what counts as a build target?
-  [NONDET: operating system versions, patches, variants, distribution if counted as the same target]
 quickstart build flow:
 install Python if necessary
 download the allmydata-tahoe-*.zip file (for a given build target)
