@@ -233,15 +233,15 @@ This approach can work only if, for each platform, the ➾ operation
 performed by the distributor results in a bytewise-identical binary
 as the ➾ operation performed by the security auditor.
 
-different build targets can have different fingerprints
-* what counts as a build target?
-  [NONDET: operating system versions, patches, variants, distribution if counted as the same target]
+The definition of a "platform" must be clearly stated so that
+auditors know which fingerprints need to be generated, and users
+know which fingerprint to compare.
 
 Here is a news article from LWN.net about the concept of repeatable
 builds (prompted in part by an open letter that we wrote): `“Security
 software verifiability”`_. Here is a `post on the tahoe-dev mailing
 list`_ and an `issue tracker ticket`_ about our desire to have
-verifiable builds for Tahoe-LAFS.
+repeatable builds for Tahoe-LAFS.
 
 .. _“Security software verifiability”: https://lwn.net/Articles/564263/
 .. _post on the tahoe-dev mailing list: https://tahoe-lafs.org/pipermail/tahoe-dev/2013-August/008684.html
@@ -251,7 +251,7 @@ Goals for this deliverable
 --------------------------
 
 For this OpenITP proposal, our goal was to have documentation of
-the ways in which Tahoe-LAFS builds are not currently verifiable.
+the ways in which Tahoe-LAFS builds are not currently repeatable.
 The scope of this documentation includes:
 
 * Tahoe-LAFS as built via setup.py (using setuptools and/or pip), and
@@ -260,9 +260,14 @@ The scope of this documentation includes:
 but does not include Tahoe-LAFS as packaged by an operating system
 distribution or package management system.
 
-In order for a build to be verifiable, the ...
+In order for a build to be repeatable, a successful build for a given
+platform must always produce the same binary. We therefore need to
+catalogue any sources of nondeterminism in the build process that
+could result in different binaries being produced.
 
-note: nondeterminism that results in obvious build failures is ok
+Nondeterminism that results in obvious build failures is not a problem,
+because by assumption the auditor only produces fingerprints for
+successfully built packages.
 
 Sources of nondeterminism
 -------------------------
@@ -270,6 +275,7 @@ Sources of nondeterminism
 quickstart build flow:
 install Python if necessary
 download the allmydata-tahoe-*.zip file (for a given build target)
+  [NONDET: operating system versions, patches, variants, distribution if counted as the same target]
 unzip it
   [NONDET: unzip programs might vary in e.g. permissions of unzipped files]
   [NONDET: file timestamps may depend on the clock of the build system]
