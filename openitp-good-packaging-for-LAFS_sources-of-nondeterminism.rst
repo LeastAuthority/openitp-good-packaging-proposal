@@ -29,8 +29,8 @@ OpenITP “Last Mile” proposal
 `Tahoe-LAFS`_ (the Least-Authority File System) implements a secure,
 decentralized storage network. It is widely regarded as having
 excellent quality and security, and it is being used by an increasing
-number of people, but it is currently not available as a precompiled
-package for Windows or Macintosh users.
+number of people. However before this project, it was not available
+as a precompiled package for Windows or Macintosh users.
 
 .. _Tahoe-LAFS: https://Tahoe-LAFS.org
 
@@ -40,16 +40,13 @@ alleged source code. Such *verifiable builds* are important for users
 to gain the security benefits from source-code-oriented security
 auditing performed by others.
 
-We propose:
+For this project we proposed:
 
 1. to extend the Tahoe-LAFS packaging to reach Windows and Macintosh
    users and Python programmers,
 2. to do so in a transparent, and reproducible way, and
 3. to document how this approach can move us toward a world of
    verifiable builds.
-
-This project is projected to span 8 weeks, starting in April and ending
-in June, with a combined cost of $30,000.
 
 ============
  Tahoe-LAFS
@@ -134,16 +131,18 @@ of the first two kinds:
    This will make it possible for Python programmers to install
    Tahoe-LAFS using their standard tools, and will facilitate
    making Tahoe-LAFS a dependency of their own Python packages.
-   It will also be a part of the technical strategy for implementing
-   the Windows and Macintosh installers.
 
-   This will also make it easy to install Tahoe-LAFS on platforms that
-   are not served by any of the above packages, such as an embedded
-   device running an alternative Linux distribution, not covered by
-   any of the packages above, or a system running an alternative
-   operating system.
+   We made progress on this goal within the scope of the OpenITP
+   packaging project (see tickets `#2032`_, `#2209`_, `#2291`_),
+   but completing it remains future work (`#2207`_, `#2210`_, `#2317`_).
 
 .. _`Python package repository`: https://pypi.python.org
+.. _`#2032`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/2032
+.. _`#2207`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/2207
+.. _`#2209`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/2209
+.. _`#2210`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/2210
+.. _`#2291`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/2291
+.. _`#2317`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/2317
 
 ========================================
  Reproducible and Transparent Packaging
@@ -197,7 +196,7 @@ of the package to be *repeatable*.
 In order to explain the repeatable build concept and how it can be
 used to verify software, consider this simple diagram::
 
-    distributor: source code ➾ binary package → user
+    distributor: source code ➾ binary package[platform] → user
 
 Here we use “➾” to mean “build” — the process that produces usable
 packages out of source code.
