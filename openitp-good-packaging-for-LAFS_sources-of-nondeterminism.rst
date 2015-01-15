@@ -325,8 +325,12 @@ nondeterminism in how it is extracted:
 The user is directed to run "``python setup.py build``". Sources of
 nondeterminism could include:
 
-* The version of Python that is run. (This should be the one chosen
-  in step 1 above, but may not be.)
+* The version of Python that is run. This should be the one chosen
+  in step 1 above, but may not be if other versions have been
+  installed -- see for example ticket `#1302`_ ("installing Python 3
+  breaks ``bin\tahoe`` on Windows"). It is also potentially possible
+  for Python subprocesses to use a different instance of Python,
+  although the build attempts to avoid this.
 * The shell that runs Python, and the environment variables set in
   that shell. This includes variables specific to Python, of which
   there are many (``PYTHONPATH``, ``PYTHONDONTWRITEBYTECODE``,
@@ -337,10 +341,6 @@ nondeterminism could include:
   those defined by the operating system (for example on Unix,
   ``LD_LIBRARY_PATH`` and locale-related variables).
 * Redirection and terminal settings.
-* Other installed Python versions. It is potentially possible for
-  Python subprocesses to use a different instance of Python, although
-  the build attempts to avoid this. See for example
-  `#1302`_ ("installing Python 3 breaks bin\tahoe on Windows").
 * The versions of libraries imported directly by ``setup.py``,
   such as ``setuptools`` and ``pkg_resources``.
 * Whether the build is performed in a ``virtualenv`` environment.
