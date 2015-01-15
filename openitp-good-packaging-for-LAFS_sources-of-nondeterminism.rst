@@ -300,9 +300,9 @@ archives are provided in six formats: three "SUMO" formats that include
 all dependencies, and three "non-SUMO" formats that only include the
 source code for Tahoe-LAFS itself. Each of these is provided as ``.zip``,
 ``.tar.bz2`` and ``.tar.gz`` archive types. The link from `quickstart.rst`_
-is to the non-SUMO ``.zip`` archive. (It may be useful to reduce the
+is to the non-SUMO ``.zip`` archive. It may be useful to reduce the
 number of formats provided in order to simplify support for repeatable
-builds.)
+builds.
 
 The auditor must have an authentic copy of the same release, and a
 correct program for extracting the archive. The archive must be
@@ -329,12 +329,13 @@ nondeterminism could include:
   in step 1 above, but may not be.)
 * The shell that runs Python, and the environment variables set in
   that shell. This includes variables specific to Python, of which
-  there are many (PYTHONPATH, PYTHONDONTWRITEBYTECODE, PYTHONDEBUG,
-  PYTHONINSPECT, PYTHONOPTIMIZE, PYTHONNOUSERSITE, PYTHONUNBUFFERED,
-  PYTHONVERBOSE, PYTHONWARNINGS, PYTHONSTARTUP, PYTHONHOME,
-  PYTHONCASEOK, PYTHONIOENCODING, PYTHONHASHSEED), and those defined
-  by the operating system (for example on Unix, LD_LIBRARY_PATH
-  and locale-related variables).
+  there are many (``PYTHONPATH``, ``PYTHONDONTWRITEBYTECODE``,
+  ``PYTHONDEBUG``, ``PYTHONINSPECT``, ``PYTHONOPTIMIZE``,
+  ``PYTHONNOUSERSITE``, ``PYTHONUNBUFFERED``, ``PYTHONVERBOSE``,
+  ``PYTHONWARNINGS``, ``PYTHONSTARTUP``, ``PYTHONHOME``,
+  ``PYTHONCASEOK``, ``PYTHONIOENCODING``, ``PYTHONHASHSEED``), and
+  those defined by the operating system (for example on Unix,
+  ``LD_LIBRARY_PATH`` and locale-related variables).
 * Redirection and terminal settings.
 * Other installed Python versions. It is potentially possible for
   Python subprocesses to use a different instance of Python, although
@@ -348,10 +349,12 @@ nondeterminism could include:
   library could have side effects on the build even if it is not
   a dependency of Tahoe-LAFS.)
 
+.. _`#1302`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/1302
+
 The build process uses a library called ``setuptools`` to satisfy
 any needed dependencies. By default, missing dependencies are
 downloaded from the Internet. Since Internet access is essentially
-impossible to make repeatable, this behaviour would need to be
+impossible to make deterministic, this behaviour would need to be
 disabled in order to achieve repeatable builds. For the purpose
 of this analysis, we will assume that all dependencies are available
 locally (for example by using a SUMO build), and that downloads from
@@ -363,33 +366,44 @@ problems.
 
 The following ``setuptools`` bugs may complicate reasoning about
 which dependencies are used:
-* `#1450`_ ("setuptools downloads and builds a correct version of
-  a dependency in the install-to-egg step, but then adds a different
-  version not satisfying the requirement to ``easy_install.pth``")
-* `#2306`_
-* `#1258`_ ("having Tahoe or any dependency installed in site-packages (or any other shared directory) can cause us to run or test the wrong code
+* `#1258`_ ("having Tahoe or any dependency installed in
+  ``site-packages`` (or any other shared directory) can cause us
+  to run or test the wrong code")
+* `#1450`_ ("setuptools downloads and builds a correct version
+  of a dependency in the install-to-egg step, but then adds a
+  different version not satisfying the requirement to
+  ``easy_install.pth``")
+* `#2306`_ ("why does zetuptoolz build the same dependency more
+  than once?")
+* `#717`_ ("unnecessary rebuild of dependencies when ``tahoe-deps/``
+  is present")
 
 Improvements to Tahoe-LAFS' build process that could mitigate the
-effects of these issues and improve testability:
-* `#1346`_ ("desert-island test can pass incorrectly because packages
-  are installed")
-* https://tahoe-lafs.org/trac/tahoe-lafs/ticket/1504
-  (allow build ignoring system-installed packages)
-* https://tahoe-lafs.org/trac/tahoe-lafs/ticket/1464
-  (stronger isolation between the Python libraries imported by
-  build steps and those used by buildbot)
-  #709 ("hard to run against alternate dependencies, e.g. trunk version of Foolscap")
-  #717 ("unnecessary rebuild of dependencies when tahoe-deps/ is present")
-#2129 ("``bin/tahoe debug trial`` runs installed code somewhere other than modified source files in ``src/``")
-
-#1220 ("build/install should be able to refrain from getting dependencies")
+effects of these issues and improve testability include:
+* `#1346`_ ("desert-island test can pass incorrectly because
+  packages are installed")
+* `#1504`_ ("allow build ignoring system-installed packages")
+* `#1464`_ ("stronger isolation between the Python libraries
+  imported by build steps and those used by buildbot")
+* `#709`_ ("hard to run against alternate dependencies, e.g.
+  trunk version of Foolscap")
+* `#2129`_ ("``bin/tahoe debug trial`` runs installed code
+  somewhere other than modified source files in ``src/``")
+* `#1220`_ ("build/install should be able to refrain from getting
+  dependencies")
 
 * which dists it chooses can influence further choices of dist for other dependencies
 
+.. _`#709`:  https://tahoe-lafs.org/trac/tahoe-lafs/ticket/709
+.. _`#717`:  https://tahoe-lafs.org/trac/tahoe-lafs/ticket/717
+.. _`#1220`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/1220
 .. _`#1346`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/1346
 .. _`#1450`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/1450
+.. _`#1464`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/1464
+.. _`#1504`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/1504
 .. _`#2055`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/2055
-
+.. _`#2129`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/2129
+.. _`#2306`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/2306
 
 Our current plan to switch to a build process using ``pip`` is
 documented in `#2077`_ ("pip packaging plan").
