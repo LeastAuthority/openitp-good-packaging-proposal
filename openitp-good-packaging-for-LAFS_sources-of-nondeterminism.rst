@@ -456,7 +456,7 @@ This OS X packaging phase has four steps:
 
 #. Solicit a volunteer to provide an OS X Buildbot slave:
 
-   * `#2303` ("Acquire and configure a dedicated OSX build slave.")
+   * `#2303`_: ("Acquire and configure a dedicated OSX build slave.")
 
    A volunteer has been found and this is planned to be set up within the next
    few weeks.
@@ -537,8 +537,8 @@ This Windows packaging phase has four steps:
      the Windows package")
 
    .. _`#195`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/195
-   .. _`2363`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/2363
-   .. _`2361`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/2361
+   .. _`#2363`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/2363
+   .. _`#2361`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/2361
 
 .. To render this reStructuredText file into a PDF file, run:
 .. rst2pdf openitp-proposal_good-packaging-for-LAFS.rst
