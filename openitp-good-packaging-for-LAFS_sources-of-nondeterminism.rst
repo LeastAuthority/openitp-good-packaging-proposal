@@ -42,15 +42,15 @@ auditing performed by others.
 
 For this project we proposed:
 
-1. to extend the Tahoe-LAFS packaging to reach Windows and Macintosh
+#. to extend the Tahoe-LAFS packaging to reach Windows and Macintosh
    users and Python programmers,
-2. to do so in a transparent, and reproducible way, and
-3. to document how this approach can move us toward a world of
+#. to do so in a transparent, and reproducible way, and
+#. to document how this approach can move us toward a world of
    verifiable builds.
 
-============
- Tahoe-LAFS
-============
+=====================
+ Tahoe-LAFS Overview
+=====================
 
 LAFS is widely regarded as having excellent quality and security. A
 `report by the Comprehensive National Cybersecurity Initiative`_ said
@@ -99,30 +99,29 @@ package info`_ installation statistics.
 
 Tahoe-LAFS is currently distributed in two ways:
 
-1. A source code distribution, which users then have to build
+#. A source code distribution, which users then have to build
    themselves, following `instructions`_ included in the source
    distribution and posted on the Tahoe-LAFS.org web site.
 
-.. _instructions: https://tahoe-lafs.org/trac/tahoe-lafs/browser/trunk/docs/quickstart.rst
-
-2. `Binary packages`_ for each of several Linux and NetBSD operating
+#. `Binary packages`_ for each of several Linux and NetBSD operating
    systems. These binary packages are built and distributed by the
    operating system maintainers themselves rather than by the
    Tahoe-LAFS developers.
 
+.. _instructions: https://tahoe-lafs.org/trac/tahoe-lafs/browser/trunk/docs/quickstart.rst
 .. _Binary packages: https://tahoe-lafs.org/trac/tahoe-lafs/wiki/Installation
 
 We propose to extend this to include a third and fourth kind of
 distribution, without interfering with the maintenance and improvement
 of the first two kinds:
 
-3. Binary packages for Macintosh and Windows, built and distributed by
+#. Binary packages for Macintosh and Windows, built and distributed by
    the Tahoe-LAFS developers themselves.
 
    This would make it possible for Macintosh and Windows users to
    install and use LAFS without building it themselves.
 
-4. A Python package that can be automatically and securely installed
+#. A Python package that can be automatically and securely installed
    from source code using the standard Python tool "pip". The source
    code will (of course) be maintained by the Tahoe-LAFS developers,
    but mirrors of the source code will be hosted by the standard
@@ -278,78 +277,77 @@ creating the Mac OS X and Windows packages.)
 
 .. _quickstart.rst: https://tahoe-lafs.org/trac/tahoe-lafs/browser/docs/quickstart.rst
 
-1. Install Python
+#. Install Python
 
-A source of nondeterminism is the version of Python installed (including
-any OS distribution-specific patches). If an existing Python installation
-is used, it may have been customized or modified by installing other
-Python packages. Depending on the platform and installation method,
-there may also be user choices of installation directory, optional
-components to be installed, and whether the installation is per-user or
-shared across users, that could affect the behaviour of the resulting
-Python instance. It is also possible that multiple instances of Python
-may be installed.
+   A source of nondeterminism is the version of Python installed (including
+   any OS distribution-specific patches). If an existing Python installation
+   is used, it may have been customized or modified by installing other
+   Python packages. Depending on the platform and installation method,
+   there may also be user choices of installation directory, optional
+   components to be installed, and whether the installation is per-user or
+   shared across users, that could affect the behaviour of the resulting
+   Python instance. It is also possible that multiple instances of Python
+   may be installed.
 
-#  [NONDET: operating system versions, patches, variants, distribution if counted as the same target]
+   [NONDET: operating system versions, patches, variants, distribution if counted as the same target]
 
+#. Get Tahoe-LAFS
 
-2. Get Tahoe-LAFS
+   The user is directed to download the latest stable release. Release
+   archives are provided in six formats: three "SUMO" formats that include
+   all dependencies, and three "non-SUMO" formats that only include the
+   source code for Tahoe-LAFS itself. Each of these is provided as ``.zip``,
+   ``.tar.bz2`` and ``.tar.gz`` archive types. The link from `quickstart.rst`_
+   is to the non-SUMO ``.zip`` archive. It may be useful to reduce the
+   number of formats provided in order to simplify support for repeatable
+   builds.
 
-The user is directed to download the latest stable release. Release
-archives are provided in six formats: three "SUMO" formats that include
-all dependencies, and three "non-SUMO" formats that only include the
-source code for Tahoe-LAFS itself. Each of these is provided as ``.zip``,
-``.tar.bz2`` and ``.tar.gz`` archive types. The link from `quickstart.rst`_
-is to the non-SUMO ``.zip`` archive. It may be useful to reduce the
-number of formats provided in order to simplify support for repeatable
-builds.
+   The auditor must have an authentic copy of the same release, and a
+   correct program for extracting the archive. The archive must be
+   extracted into a new directory. There are potential sources of
+   nondeterminism in how it is extracted:
 
-The auditor must have an authentic copy of the same release, and a
-correct program for extracting the archive. The archive must be
-extracted into a new directory. There are potential sources of
-nondeterminism in how it is extracted:
+   * The permissions of the extracted files may vary depending on the
+     extraction program and options, and the umask (or similar on
+     non-Unix operating systems) of the user.
+   * File timestamps may depend on the clock of the build system.
+   * The order of files and subdirectories in each directory may vary,
+     if the filesystem or extraction program does not automatically
+     sort them.
+   * Filesystems may vary in case sensitivity; this can matter if an
+     archive has entries in the same directory with names differing
+     only in case (or Unicode normalization form).
 
-* The permissions of the extracted files may vary depending on the
-  extraction program and options, and the umask (or similar on
-  non-Unix operating systems) of the user.
-* File timestamps may depend on the clock of the build system.
-* The order of files and subdirectories in each directory may vary,
-  if the filesystem or extraction program does not automatically
-  sort them.
-* Filesystems may vary in case sensitivity; this can matter if an
-  archive has entries in the same directory with names differing
-  only in case (or Unicode normalization form).
+#. Build Tahoe-LAFS
 
-3. Build Tahoe-LAFS
+   The user is directed to run "``python setup.py build``". Sources of
+   nondeterminism could include:
 
-The user is directed to run "``python setup.py build``". Sources of
-nondeterminism could include:
+   * The version of Python that is run. This should be the one chosen
+     in step 1 above, but may not be if other versions have been
+     installed -- see for example ticket `#1302`_ ("installing Python 3
+     breaks ``bin\tahoe`` on Windows"). It is also potentially possible
+     for Python subprocesses to use a different instance of Python,
+     although the build attempts to avoid this.
+   * The shell that runs Python, and the environment variables set in
+     that shell. This includes variables specific to Python, of which
+     there are many (``PYTHONPATH``, ``PYTHONDONTWRITEBYTECODE``,
+     ``PYTHONDEBUG``, ``PYTHONINSPECT``, ``PYTHONOPTIMIZE``,
+     ``PYTHONNOUSERSITE``, ``PYTHONUNBUFFERED``, ``PYTHONVERBOSE``,
+     ``PYTHONWARNINGS``, ``PYTHONSTARTUP``, ``PYTHONHOME``,
+     ``PYTHONCASEOK``, ``PYTHONIOENCODING``, ``PYTHONHASHSEED``), and
+     those defined by the operating system (for example on Unix,
+     ``LD_LIBRARY_PATH`` and locale-related variables).
+   * Redirection and terminal settings.
+   * The versions of libraries imported directly by ``setup.py``,
+     such as ``setuptools`` and ``pkg_resources``.
+   * Whether the build is performed in a ``virtualenv`` environment.
+   * Which other Python packages are installed in the system and in
+     any ``virtualenv`` environment. (Potentially, *any* installed
+     library could have side effects on the build even if it is not
+     a dependency of Tahoe-LAFS.)
 
-* The version of Python that is run. This should be the one chosen
-  in step 1 above, but may not be if other versions have been
-  installed -- see for example ticket `#1302`_ ("installing Python 3
-  breaks ``bin\tahoe`` on Windows"). It is also potentially possible
-  for Python subprocesses to use a different instance of Python,
-  although the build attempts to avoid this.
-* The shell that runs Python, and the environment variables set in
-  that shell. This includes variables specific to Python, of which
-  there are many (``PYTHONPATH``, ``PYTHONDONTWRITEBYTECODE``,
-  ``PYTHONDEBUG``, ``PYTHONINSPECT``, ``PYTHONOPTIMIZE``,
-  ``PYTHONNOUSERSITE``, ``PYTHONUNBUFFERED``, ``PYTHONVERBOSE``,
-  ``PYTHONWARNINGS``, ``PYTHONSTARTUP``, ``PYTHONHOME``,
-  ``PYTHONCASEOK``, ``PYTHONIOENCODING``, ``PYTHONHASHSEED``), and
-  those defined by the operating system (for example on Unix,
-  ``LD_LIBRARY_PATH`` and locale-related variables).
-* Redirection and terminal settings.
-* The versions of libraries imported directly by ``setup.py``,
-  such as ``setuptools`` and ``pkg_resources``.
-* Whether the build is performed in a ``virtualenv`` environment.
-* Which other Python packages are installed in the system and in
-  any ``virtualenv`` environment. (Potentially, *any* installed
-  library could have side effects on the build even if it is not
-  a dependency of Tahoe-LAFS.)
-
-.. _`#1302`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/1302
+   .. _`#1302`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/1302
 
 The build process uses a library called ``setuptools`` to satisfy
 any needed dependencies. By default, missing dependencies are
@@ -366,6 +364,7 @@ problems.
 
 The following ``setuptools`` bugs may complicate reasoning about
 which dependencies are used:
+
 * `#1258`_ ("having Tahoe or any dependency installed in
   ``site-packages`` (or any other shared directory) can cause us
   to run or test the wrong code")
@@ -380,6 +379,7 @@ which dependencies are used:
 
 Improvements to Tahoe-LAFS' build process that could mitigate the
 effects of these issues and improve testability include:
+
 * `#1346`_ ("desert-island test can pass incorrectly because
   packages are installed")
 * `#1504`_ ("allow build ignoring system-installed packages")
@@ -391,12 +391,12 @@ effects of these issues and improve testability include:
   somewhere other than modified source files in ``src/``")
 * `#1220`_ ("build/install should be able to refrain from getting
   dependencies")
-
-* which dists it chooses can influence further choices of dist for other dependencies
+* [which dists it chooses can influence further choices of dist for other dependencies]
 
 .. _`#709`:  https://tahoe-lafs.org/trac/tahoe-lafs/ticket/709
 .. _`#717`:  https://tahoe-lafs.org/trac/tahoe-lafs/ticket/717
 .. _`#1220`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/1220
+.. _`#1258`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/1258
 .. _`#1346`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/1346
 .. _`#1450`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/1450
 .. _`#1464`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/1464
@@ -443,7 +443,7 @@ The following additional sources of nondeterminism may be present:
  Mac OS X packaging
 ====================
 
-# note: uses installed Python
+note: uses installed Python
 
 This OS X packaging phase has four steps:
 
@@ -454,18 +454,18 @@ This OS X packaging phase has four steps:
 
 #. Implement packaging tests for known OS X-specific issues:
 
-   * `Ticket 1006`_: *Incorrect pycryptopp architecture selected on osx 10.6.*
+   * `#1006`_: ("Incorrect pycryptopp architecture selected on osx 10.6.")
 
      This ticket has been closed as it is difficult to reproduce. Also there
      are probably not many installations of OS X 10.6 these days. On newer OS X
      versions, this has not been observed.
 
-   * `Ticket 2001`_: *build binary eggs for macosx-10.9-intel (mavericks)*
+   * `#2001`_: ("build binary eggs for macosx-10.9-intel (mavericks)")
 
-   .. _`Ticket 1006`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/1006
-   .. _`Ticket 2001`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/2001
+   .. _`#1006`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/1006
+   .. _`#2001`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/2001
 
-   * `Ticket 182`_: *build a .pkg installer for Mac OS X 10.9 Mavericks (intel-x86-64)*
+   * `#182`_: ("build a .pkg installer for Mac OS X 10.9 Mavericks (intel-x86-64)")
 
      A make target for building OS X package has been added. Package tests are
      also added to see if the resultant Python package modules are installed
@@ -478,25 +478,26 @@ This OS X packaging phase has four steps:
      official releases of Tahoe-LAFS. Currently it builds the version from
      the master branch.
 
-   .. _`Ticket 182`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/182
+   .. _`#182`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/182
 
 ===================
  Windows packaging
 ===================
 
-# note: installer checks existing version of Python and installs
-# a known version if there is no existing version, or it is too old
+note: installer checks existing version of Python and installs
+a known version if there is no existing version, or it is too old
 
-This Windows packaging phase has four steps, similar to `Phase 3: Mac OS X packaging`_
+This Windows packaging phase has four steps:
 
 #. Solicit a volunteer to provide a Windows Buildbot slave.
 #. Implement packaging tests for known Windows-specific issues:
 
-   * `Ticket 1093`_: *win32 build hell*
-   * `Ticket 1371`_: *Windows registry keys for Python file associations may have broken permissions, preventing build or installation*
+   * `#1093`_ ("win32 build hell")
+   * `#1371`_ ("Windows registry keys for Python file associations may
+     have broken permissions, preventing build or installation")
 
-   .. _`Ticket 1093`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/1093
-   .. _`Ticket 1371`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/1371
+   .. _`#1093`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/1093
+   .. _`#1371`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/1371
 
 #. Fix those tickets and verify that source-based or pip-based
    installations work on Windows on the relevant Build-slaves.
@@ -507,9 +508,9 @@ This Windows packaging phase has four steps, similar to `Phase 3: Mac OS X packa
 #. Create a new build target for a Windows-based package, and develop
    an automated package test in concert with this development.
 
-   * `Ticket 195`_: *user-friendly installer for Windows -- for my Dad!*
+   * `#195`_: ("build an .exe installer for 64-bit Windows 7 (and preferably 8)")
 
-   .. _`Ticket 195`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/195
+   .. _`#195`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/195
 
 .. To render this reStructuredText file into a PDF file, run:
 .. rst2pdf openitp-proposal_good-packaging-for-LAFS.rst
