@@ -249,11 +249,11 @@ Goals for this deliverable
 --------------------------
 
 For this OpenITP proposal, our goal was to have documentation of
-the ways in which Tahoe-LAFS builds are *not* currently repeatable.
-The scope of this documentation includes:
+the ways in which Tahoe-LAFS builds are *not* currently repeatable
+(`#2357`_). The scope of this documentation includes:
 
 * Tahoe-LAFS as built via setup.py (using setuptools and/or pip), and
-* the MAC OS X (#182) and Windows (#195) packages 
+* the Mac OS X (`#182`_) and Windows (`#195`_) packages 
 
 but does not include Tahoe-LAFS as packaged by an operating system
 distribution or package management system.
@@ -266,6 +266,8 @@ could result in different binaries being produced.
 Nondeterminism that results in obvious build failures is not a problem,
 because by assumption the auditor only produces fingerprints for
 successfully built packages.
+
+.. _`#2357`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/2357
 
 Sources of nondeterminism
 -------------------------
@@ -391,11 +393,15 @@ effects of these issues and improve testability include:
   somewhere other than modified source files in ``src/``")
 * `#1220`_ ("build/install should be able to refrain from getting
   dependencies")
-* [which dists it chooses can influence further choices of dist for other dependencies]
+* `#1248`_ ("move logic for build steps from buildmaster config
+  to misc/build_helpers")
+* `#2362`_ ("get buildmaster config synced up with the corresponding
+  git repo")
 
 .. _`#709`:  https://tahoe-lafs.org/trac/tahoe-lafs/ticket/709
 .. _`#717`:  https://tahoe-lafs.org/trac/tahoe-lafs/ticket/717
 .. _`#1220`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/1220
+.. _`#1248`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/1248
 .. _`#1258`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/1258
 .. _`#1346`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/1346
 .. _`#1450`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/1450
@@ -404,6 +410,7 @@ effects of these issues and improve testability include:
 .. _`#2055`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/2055
 .. _`#2129`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/2129
 .. _`#2306`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/2306
+.. _`#2362`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/2362
 
 Our current plan to switch to a build process using ``pip`` is
 documented in `#2077`_ ("pip packaging plan").
@@ -447,10 +454,14 @@ note: uses installed Python
 
 This OS X packaging phase has four steps:
 
-#. Solicit a volunteer to provide an OS X Buildbot slave.
+#. Solicit a volunteer to provide an OS X Buildbot slave:
+
+   * `#2303` ("Acquire and configure a dedicated OSX build slave.")
 
    A volunteer has been found and this is planned to be set up within the next
    few weeks.
+
+   .. _`#2303`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/2303
 
 #. Implement packaging tests for known OS X-specific issues:
 
@@ -466,19 +477,26 @@ This OS X packaging phase has four steps:
    .. _`#2001`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/2001
 
    * `#182`_: ("build a .pkg installer for Mac OS X 10.9 Mavericks (intel-x86-64)")
+   * `#2304`_: ("Create an OSX automated packaging test which exercises building,
+     installing ``pkg`` file.")
+   * `#2360`_: ("write and deploy a buildbot step that builds and tests the
+     Mac OS X package")
 
-     A make target for building OS X package has been added. Package tests are
-     also added to see if the resultant Python package modules are installed
-     in the right directories.
+   A make target for building OS X package has been added. Package tests are
+   also added to see if the resultant Python package modules are installed
+   in the right directories.
 
-     A draft video of the OS X package configuration and usage has been
-     made, and will be posted on the blog once editing has been completed.
+   A draft video of the OS X package configuration and usage has been
+   made, and will be posted on the blog once editing has been completed:
 
-     The OS X installer package will be made available for the subsequent
-     official releases of Tahoe-LAFS. Currently it builds the version from
-     the master branch.
+   The OS X installer package will be made available for the subsequent
+   official releases of Tahoe-LAFS. Currently it builds the version from
+   the master branch.
 
    .. _`#182`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/182
+   .. _`#2304`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/2304
+   .. _`#2360`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/2360
+
 
 ===================
  Windows packaging
@@ -502,6 +520,10 @@ This Windows packaging phase has four steps:
 #. Fix those tickets and verify that source-based or pip-based
    installations work on Windows on the relevant Build-slaves.
 
+   * `#1981`_ ("build binary eggs for Windows x86 (64-bit)")
+
+   .. _`#1981`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/1981
+
    At this stage announce improved Windows support on the mailing list,
    as for OS X.
 
@@ -509,8 +531,14 @@ This Windows packaging phase has four steps:
    an automated package test in concert with this development.
 
    * `#195`_: ("build an .exe installer for 64-bit Windows 7 (and preferably 8)")
+   * `#2363`_: ("Create a Windows automated packaging test which exercises
+     building, installing ``exe`` file.")
+   * `#2361`_: ("write and deploy a buildbot step that builds and tests
+     the Windows package")
 
    .. _`#195`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/195
+   .. _`2363`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/2363
+   .. _`2361`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/2361
 
 .. To render this reStructuredText file into a PDF file, run:
 .. rst2pdf openitp-proposal_good-packaging-for-LAFS.rst
