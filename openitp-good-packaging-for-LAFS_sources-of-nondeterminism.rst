@@ -63,7 +63,7 @@ arbitrarily many servers. … Wider deployment of this type of file
 storage system would have an immediate impact on the quality of modern
 data protection.”.
 
-.. _report by the Comprehensive National Cybersecurity Initiative: http://www.cyber.st.dhs.gov/docs/National_Cyber_Leap_Year_Summit_2009_Co-Chairs_Report.pdf
+.. _report by the Comprehensive National Cybersecurity Initiative: https://tahoe-lafs.org/~zooko/National_Cyber_Leap_Year_Summit_2009_CoChairs_Report.pdf
 
 It has also received `praise from Jacob Appelbaum and
 Richard M. Stallman`_, among others. It has been studied and used by
