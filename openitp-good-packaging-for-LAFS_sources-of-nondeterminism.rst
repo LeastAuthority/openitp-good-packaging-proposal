@@ -445,12 +445,13 @@ The following additional sources of nondeterminism may be present:
 * Side effects of operations such as running tests, which may
   write to files under the build directory.
 
+Sources of nondeterminism specific to the Mac OS X and Windows packages
+are discussed in those sections below.
+
 
 ====================
  Mac OS X packaging
 ====================
-
-note: uses installed Python
 
 This OS X packaging phase has four steps:
 
@@ -482,12 +483,12 @@ This OS X packaging phase has four steps:
    * `#2360`_: ("write and deploy a buildbot step that builds and tests the
      Mac OS X package")
 
-   A make target for building OS X package has been added. Package tests are
-   also added to see if the resultant Python package modules are installed
+   A make target for building the OS X package has been added. Package tests
+   are also added to see if the resultant Python package modules are installed
    in the right directories.
 
    A draft video of the OS X package configuration and usage has been
-   made, and will be posted on the blog once editing has been completed:
+   made, and will be posted on the blog once editing has been completed.
 
    The OS X installer package will be made available for the subsequent
    official releases of Tahoe-LAFS. Currently it builds the version from
@@ -497,13 +498,44 @@ This OS X packaging phase has four steps:
    .. _`#2304`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/2304
    .. _`#2360`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/2360
 
+Sources of nondeterminism
+-------------------------
+
+The OS X package uses the installed version of Python. By default, OS X 10.9
+(Mavericks) provides Python 2.7.6. It also provides Twisted 13.2.0,
+zope.interface, pyOpenSSL 0.13.1, and (with current security updates)
+OpenSSL 0.9.8za, which are dependencies of Tahoe-LAFS; therefore these are
+not included in the installer. The installed Python packages may vary as
+described earlier.
+
+The system C compiler is used to compile extension modules for pycryptopp
+and pycrypto.
+
+The pkgbuild and productbuild tools are used to create the .pkg file.
+
+Therefore, the versions of the system C compiler, pkgbuild, and productbuild
+are sources of nondeterminism. The version of setuptools used to build the
+package is fixed since it is bundled with the Tahoe-LAFS source.
+
+The C compiler, setuptools, pkgbuild, productbuild, and any tools that they
+depend on, may also operate nondeterministically.
+
+Other security issues
+---------------------
+
+At the time of writing, the version of OpenSSL provided by OS X Mavericks is
+OpenSSL 0.9.8za. This is subject to a `number of security flaws`_ including the
+`POODLE`_ flaw. We intend to update the installer (and Tahoe-LAFS built as
+described in `quickstart.rst`_) to use a version of pyOpenSSL that links against
+a more recent embedded copy of the OpenSSL library.
+
+.. _`number of security flaws`: https://www.openssl.org/news/openssl-0.9.8-notes.html
+.. _`POODLE`: https://www.openssl.org/~bodo/ssl-poodle.pdf
+
 
 ===================
  Windows packaging
 ===================
-
-note: installer checks existing version of Python and installs
-a known version if there is no existing version, or it is too old
 
 This Windows packaging phase has four steps:
 
@@ -539,6 +571,14 @@ This Windows packaging phase has four steps:
    .. _`#195`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/195
    .. _`#2363`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/2363
    .. _`#2361`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/2361
+
+Sources of nondeterminism
+-------------------------
+
+The Windows installer checks the existing version of Python and installs
+a known version if there is no existing version, or it is too old
+
+
 
 .. To render this reStructuredText file into a PDF file, run:
 .. rst2pdf openitp-proposal_good-packaging-for-LAFS.rst
