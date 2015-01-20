@@ -576,8 +576,22 @@ Sources of nondeterminism
 -------------------------
 
 The Windows installer checks the existing version of Python and installs
-a known version if there is no existing version, or it is too old
+a known version if there is no existing version, or if that version
+is older than 2.7. In the case where the existing version of Python
+is used, the installed Python packages may vary as described earlier.
 
+The Windows package is compiled using Microsoft Visual Studio Express 2008 SP1.
+(This somewhat old version is required in order to compile Python extension
+modules that link correctly against the Windows build of Python 2.7.)
+A number of workarounds are required in order to get Visual Studio to
+compile for 64-bit Windows; these are potential sources of nondeterminism
+since it is difficult to guarantee that an auditor's machine will be set
+up identically to the original build conditions for the Windows package.
+
+The InfoZIP ``zip`` utility is used to generate the self-extracting zip file.
+
+Command-line tools provided with Inkscape are used to convert icon images
+to the required format.
 
 
 .. To render this reStructuredText file into a PDF file, run:
