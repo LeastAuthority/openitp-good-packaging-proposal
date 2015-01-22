@@ -581,7 +581,7 @@ on, may also operate nondeterministically.
 
 
 .. To render this reStructuredText file into a PDF file, run:
-.. rst2pdf openitp-proposal_good-packaging-for-LAFS.rst
+.. rst2pdf openitp-good-packaging-for-LAFS_sources-of-nondeterminism.rst
 
 .. To render this reStructuredText file into an HTML file, run:
-.. F=openitp-proposal_good-packaging-for-LAFS ; rst2html $F.rst > $F.html
+.. F=openitp-good-packaging-for-LAFS_sources-of-nondeterminism ; rst2html --verbose $F.rst > $F.html
