@@ -48,51 +48,6 @@ For this project we proposed:
 #. to document how this approach can move us toward a world of
    verifiable builds.
 
-=====================
- Tahoe-LAFS Overview
-=====================
-
-LAFS is widely regarded as having excellent quality and security. A
-`report by the Comprehensive National Cybersecurity Initiative`_ said
-“We wish to highlight the Least-Authority File System, a
-cross-platform open-source software solution which demonstrates both
-secure chunking and redundant data decentralization. … It promotes an
-explicitly secure, fault- tolerant model: stored files are broken into
-pieces, encrypted, and the pieces are redundantly stored across
-arbitrarily many servers. … Wider deployment of this type of file
-storage system would have an immediate impact on the quality of modern
-data protection.”.
-
-.. _report by the Comprehensive National Cybersecurity Initiative: https://tahoe-lafs.org/~zooko/National_Cyber_Leap_Year_Summit_2009_CoChairs_Report.pdf
-
-It has also received `praise from Jacob Appelbaum and
-Richard M. Stallman`_, among others. It has been studied and used by
-computer scientists, hackers, Free and Open Source software
-developers, activists, the U.S. Defense Advanced Research Projects
-Agency (DARPA), and the U.S. National Security Agency (NSA).
-
-.. _praise from Jacob Appelbaum and Richard M. Stallman: https://leastauthority.com/blog/least-authority-announces-prism-proof-storage-service.html
-
-The design has been published in a `peer-reviewed science paper`_, and
-has been `cited more than one hundred times`_.
-
-.. _peer-reviewed science paper: http://eprint.iacr.org/2012/524
-
-.. _cited more than one hundred times: http://scholar.google.com/scholar?q=%22least-authority+filesystem%22+OR+%22tahoe-lafs%22+OR+%22least-authority+file+system%22&btnG=&hl=en&as_sdt=0%2C6
-
-LAFS provides *end-to-end* security, meaning that the end user's
-confidentiality and integrity guarantees are not subject to the
-discretion of any third party. The ultimate goal of the LAFS project
-is to put control of every individual's data into that person's hands.
-
-LAFS appears to have a steadily growing userbase based on `ubuntu
-popularity contest`_, `debian popularity contest`_, and `crate.io python
-package info`_ installation statistics.
-
-.. _`ubuntu popularity contest`: http://www.lesbonscomptes.com/upopcon/
-.. _`debian popularity contest`: http://qa.debian.org/popcon.php?package=tahoe-lafs
-.. _`crate.io python package info`: https://crate.io/packages/allmydata-tahoe/
-
 ===========
  Packaging
 ===========
