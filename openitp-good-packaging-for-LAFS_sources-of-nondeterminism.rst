@@ -246,8 +246,6 @@ creating the Mac OS X and Windows packages.)
    Python instance. It is also possible that multiple instances of Python
    may be installed.
 
-   [NONDET: operating system versions, patches, variants, distribution if counted as the same target]
-
 #. Get Tahoe-LAFS
 
    The user is directed to download the latest stable release. Release
@@ -383,6 +381,9 @@ C/C++ extension modules.
 
 The following additional sources of nondeterminism may be present:
 
+* Operating system versions, patches, variants, and distribution
+  (if counted as the same target for the purpose of generating
+  fingerprints).
 * The order in which dependencies are built.
 * Whether C/C++ extensions are "embedded" or dynamically linked
   against an installed system library (this is relevant for
