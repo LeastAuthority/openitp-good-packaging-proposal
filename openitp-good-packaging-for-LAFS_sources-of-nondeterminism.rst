@@ -496,17 +496,30 @@ a more recent embedded copy of the OpenSSL library.
 This Windows packaging phase has four steps:
 
 #. Solicit a volunteer to provide a Windows Buildbot slave.
+
+   * `#2344`_: ("Acquire and configure a dedicated Windows build slave.")
+
+   As for OS X, a volunteer has been found and this is planned to be set
+   up very soon.
+
+   .. _`#2344`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/2344
+
 #. Implement packaging tests for known Windows-specific issues:
 
    * `#1093`_ ("win32 build hell")
+
+   This ticket is closed because it was using build methods that are
+   now documented as unsupported.
+
+   .. _`#1093`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/1093
+
    * `#1371`_ ("Windows registry keys for Python file associations may
      have broken permissions, preventing build or installation")
 
-   .. _`#1093`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/1093
    .. _`#1371`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/1371
 
-#. Fix those tickets and verify that source-based or pip-based
-   installations work on Windows on the relevant Build-slaves.
+#. Verify that source-based or pip-based installations work on Windows
+   on the relevant Build-slaves. For 64-bit Windows this depends on:
 
    * `#1981`_ ("build binary eggs for Windows x86 (64-bit)")
 
@@ -514,6 +527,9 @@ This Windows packaging phase has four steps:
 
    At this stage announce improved Windows support on the mailing list,
    as for OS X.
+
+   We plan to complete this for the Tahoe-LAFS 1.10.1 beta release which
+   is scheduled for February 10th.
 
 #. Create a new build target for a Windows-based package, and develop
    an automated package test in concert with this development.
@@ -527,6 +543,9 @@ This Windows packaging phase has four steps:
    .. _`#195`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/195
    .. _`#2363`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/2363
    .. _`#2361`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/2361
+
+   The Windows installer package will be made available for Tahoe-LAFS
+   1.10.1 and subsequent official releases.
 
 Sources of nondeterminism
 -------------------------
@@ -548,6 +567,17 @@ The InfoZIP ``zip`` utility is used to generate the self-extracting zip file.
 
 Command-line tools provided with Inkscape are used to convert icon images
 to the required format.
+
+Microsoft Visual Studio Express is also used to compile OpenSSL, and the
+extension modules for pyOpenSSL, pycryptopp and pycrypto.
+
+Therefore, the versions of the Microsoft Visual Studio Express and
+Windows SDK tools are sources of nondeterminism. The version of setuptools
+used to build the package is fixed since it is bundled with the Tahoe-LAFS
+source.
+
+The C compiler, setuptools, zip, Inkscape, and any tools that they depend
+on, may also operate nondeterministically.
 
 
 .. To render this reStructuredText file into a PDF file, run:
