@@ -396,14 +396,15 @@ The following additional sources of nondeterminism may be present:
   dependencies).
 * The build process for C/C++ code may be nondeterministic, for
   example depending on timestamps, permissions, and similar.
-* distutils properties that affect compilation
-  [need reference]
+* `distutils configuration files`_ that affect compilation.
 * Environment variables that affect compilation of Python code.
 * Execution of Python code for building Tahoe-LAFS or a dependency
   (for example the order of ``dict`` elements etc.)
 * Possible reliance on entropy sources (e.g. ``os.urandom``).
 * Side effects of operations such as running tests, which may
   write to files under the build directory.
+
+.. _`distutils configuration files`: https://docs.python.org/2/install/index.html#distutils-configuration-files
 
 Sources of nondeterminism specific to the Mac OS X and Windows packages
 are discussed in those sections below.
@@ -515,12 +516,10 @@ This Windows packaging phase has four steps:
    This ticket is closed because it was using build methods that are
    now documented as unsupported.
 
+   * `#1009`_ ("-SUMO package doesn't build on XP")
+
    .. _`#1093`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/1093
-
-   * `#1371`_ ("Windows registry keys for Python file associations may
-     have broken permissions, preventing build or installation")
-
-   .. _`#1371`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/1371
+   .. _`#1009`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/1009
 
 #. Verify that source-based or pip-based installations work on Windows
    on the relevant Build-slaves. For 64-bit Windows this depends on:
@@ -547,6 +546,12 @@ This Windows packaging phase has four steps:
    .. _`#195`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/195
    .. _`#2363`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/2363
    .. _`#2361`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/2361
+
+   A video of the Windows package usage is in the process of being
+   reviewed and edited (`#2262`_), and will be posted on the blog once it
+   has been completed.
+
+   .. _`#2262`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/2262
 
    The Windows installer package will be made available for Tahoe-LAFS
    1.10.1 and subsequent official releases.
