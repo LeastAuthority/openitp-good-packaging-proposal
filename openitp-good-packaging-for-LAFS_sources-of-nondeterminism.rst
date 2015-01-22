@@ -234,6 +234,10 @@ creating the Mac OS X and Windows packages.)
 
 .. _quickstart.rst: https://tahoe-lafs.org/trac/tahoe-lafs/browser/docs/quickstart.rst
 
+Note that where we refer to the "user" below, this means *both* the
+end-user and the auditor, who perform the same process on their
+respective systems to obtain a binary build.
+
 #. Install Python
 
    A source of nondeterminism is the version of Python installed (including
