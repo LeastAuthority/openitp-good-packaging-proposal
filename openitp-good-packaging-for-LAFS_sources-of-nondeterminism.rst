@@ -73,7 +73,7 @@ of the first two kinds:
 #. Binary packages for Macintosh and Windows, built and distributed by
    the Tahoe-LAFS developers themselves.
 
-   This would make it possible for Macintosh and Windows users to
+   This will make it possible for Macintosh and Windows users to
    install and use LAFS without building it themselves.
 
 #. A Python package that can be automatically and securely installed
@@ -279,7 +279,7 @@ creating the Mac OS X and Windows packages.)
    nondeterminism could include:
 
    * The version of Python that is run. This should be the one chosen
-     in step 1 above, but may not be if other versions have been
+     in step 1 above, but might not be if other versions have been
      installed -- see for example ticket `#1302`_ ("installing Python 3
      breaks ``bin\tahoe`` on Windows"). It is also potentially possible
      for Python subprocesses to use a different instance of Python,
