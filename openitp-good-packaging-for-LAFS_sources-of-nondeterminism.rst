@@ -186,6 +186,8 @@ This approach can work only if, for each platform, the ➾ operation
 performed by the distributor results in a bytewise-identical binary
 to the ➾ operation performed by the security auditor.
 
+.. This is not strictly true, for example, a "fuzzy fingerprinting" algorithm could produce an identifier using only a subset of the build output bytes, for example by excluding known timestamps fields from a hash calculation.  That seems like a messy route and the one presented here is more sensical, so this is somewhat pedantic.
+
 The definition of a "platform" must be clearly stated so that
 auditors know which fingerprints need to be generated, and users
 know which fingerprint to compare.
@@ -594,3 +596,6 @@ on, may also operate nondeterministically.
 
 .. To render this reStructuredText file into an HTML file, run:
 .. F=openitp-good-packaging-for-LAFS_sources-of-nondeterminism ; rst2html --verbose $F.rst > $F.html
+
+
+.. This report looks good to ship to me.
