@@ -71,7 +71,7 @@ distribution, without interfering with the maintenance and improvement
 of the first two kinds:
 
 #. Binary packages for Macintosh and Windows, built and distributed by
-   the Tahoe-LAFS developers themselves.
+   the Tahoe-LAFS developers.
 
    This will make it possible for Macintosh and Windows users to
    install and use LAFS without building it themselves.
@@ -141,7 +141,7 @@ targets.
  Towards Verifiable Builds
 ===========================
 
-A long-term goal, which we will make progress toward in the scope of
+A long-term goal, which we have made progress toward in the scope of
 this project, is to enable end-users to verify that the package of
 Tahoe-LAFS that they are using was generated from the exact same
 source code that a security auditor examined. This requires builds
@@ -158,7 +158,7 @@ packages out of source code.
 Now consider a security auditor who does a source-code-based
 examination (as opposed to binary-based, which is called “reverse
 engineering”). This security auditor will start with the source code,
-and examine it for vulnerabilities or backdoors.::
+and examine it for vulnerabilities or backdoors::
 
     auditor: source code → security audit
 
@@ -177,7 +177,7 @@ taking a fingerprint (secure hash) of each resulting binary package::
 The auditor then publishes these fingerprints along with their report
 about their security audit. Users who receive the binary package for
 a given platform can take a fingerprint of that package and compare it
-to the fingerprint in the published report.::
+to the fingerprint in the published report::
 
    distributor: source code ➾ binary package[platform] → user
    user: binary package[platform] → check fingerprint
