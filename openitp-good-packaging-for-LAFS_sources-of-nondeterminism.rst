@@ -454,8 +454,8 @@ This OS X packaging phase has four steps:
    .. _`#2304`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/2304
    .. _`#2360`: https://tahoe-lafs.org/trac/tahoe-lafs/ticket/2360
 
-Sources of nondeterminism
--------------------------
+Sources of nondeterminism (OS X)
+--------------------------------
 
 The OS X package uses the installed version of Python. By default, OS X 10.9
 (Mavericks) provides Python 2.7.6. It also provides Twisted 13.2.0,
@@ -547,8 +547,8 @@ This Windows packaging phase has four steps:
    The Windows installer package will be made available for Tahoe-LAFS
    1.10.1 and subsequent official releases.
 
-Sources of nondeterminism
--------------------------
+Sources of nondeterminism (Windows)
+-----------------------------------
 
 The Windows installer checks the existing version of Python and installs
 a known version if there is no existing version, or if that version
